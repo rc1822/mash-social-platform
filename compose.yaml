@@ -1,0 +1,13 @@
+services:
+  mash:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_PATH: /app/data/mash.db
+      SESSION_HOURS: 24
+    volumes:
+      - mash-data:/app/data
+volumes:
+  mash-data:

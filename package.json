@@ -1,0 +1,25 @@
+{
+  "name": "mash-social-platform",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A portfolio-ready social platform built with Node.js, SQLite, secure authentication, posts, friends, messaging, and short-form video.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "keywords": [
+    "nodejs",
+    "sqlite",
+    "rest-api",
+    "authentication",
+    "social-media",
+    "portfolio"
+  ],
+  "license": "MIT"
+}

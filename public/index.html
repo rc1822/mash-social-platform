@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Mash is a full-stack social platform portfolio project with secure authentication, posts, friends, messaging and short-form video.">
+  <title>Mash — Social Platform</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <section id="authView" class="auth-shell">
+    <div class="brand-panel">
+      <img src="/assets/mash-logo.png" alt="Mash logo" class="brand-logo">
+      <p class="eyebrow">SOCIAL PLATFORM · V2</p>
+      <h1>Connect, post, and message without the prototype shortcuts.</h1>
+      <p class="hero-copy">A rebuilt full-stack version of Mash using Node.js, SQLite, secure password hashing, token sessions, protected REST endpoints, and persistent social data.</p>
+      <div class="feature-chips">
+        <span>Secure auth</span><span>SQLite</span><span>REST API</span><span>Friends</span><span>Messaging</span><span>Video</span>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="tabs">
+        <button id="loginTab" class="tab active" type="button">Sign in</button>
+        <button id="registerTab" class="tab" type="button">Create account</button>
+      </div>
+
+      <form id="loginForm" class="stack">
+        <label>Username or email<input name="username" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+
+      <form id="registerForm" class="stack hidden">
+        <label>Username<input name="username" autocomplete="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="primary" type="submit">Create account</button>
+      </form>
+      <p class="muted auth-note">Passwords are hashed on the server. The browser stores only a revocable session token.</p>
+    </div>
+  </section>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="/assets/mash-logo.png" alt="" class="sidebar-logo">
+        <div><strong>Mash</strong><span>Social Platform</span></div>
+      </div>
+      <nav id="nav" class="nav-list" aria-label="Main navigation">
+        <button data-view="feed" class="nav-item active">Home feed</button>
+        <button data-view="create" class="nav-item">Create post</button>
+        <button data-view="friends" class="nav-item">Friends</button>
+        <button data-view="messages" class="nav-item">Messages</button>
+        <button data-view="minis" class="nav-item">Mash Minis</button>
+        <button data-view="profile" class="nav-item">Profile</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div id="sidebarUser" class="mini-user"></div>
+        <button id="logoutBtn" class="ghost danger" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="mobile-header">
+        <img src="/assets/mash-logo.png" alt="Mash" class="mobile-logo">
+        <button id="mobileMenuBtn" class="ghost" type="button">Menu</button>
+      </header>
+
+      <section id="feedView" class="view">
+        <div class="page-heading"><div><p class="eyebrow">YOUR NETWORK</p><h2>Home feed</h2><p>Posts from you and your friends.</p></div><button class="primary compact" data-go="create">New post</button></div>
+        <div id="feedList" class="feed-list"></div>
+      </section>
+
+      <section id="createView" class="view hidden">
+        <div class="page-heading"><div><p class="eyebrow">SHARE SOMETHING</p><h2>Create post</h2><p>Images are optional and stored with the post for this portfolio demo.</p></div></div>
+        <form id="postForm" class="panel stack">
+          <label>Title<input name="title" maxlength="100" required></label>
+          <label>Post<textarea name="body" maxlength="1000" rows="6" required></textarea></label>
+          <label>Image <span class="muted">(optional, under ~500 KB recommended)</span><input name="image" type="file" accept="image/*"></label>
+          <img id="postPreview" class="image-preview hidden" alt="Post image preview">
+          <button class="primary" type="submit">Publish post</button>
+        </form>
+      </section>
+
+      <section id="friendsView" class="view hidden">
+        <div class="page-heading"><div><p class="eyebrow">CONNECTIONS</p><h2>Friends</h2><p>Search for people, manage requests, and keep your network organized.</p></div></div>
+        <div class="panel search-row"><input id="userSearch" placeholder="Search username"><button id="searchBtn" class="primary compact" type="button">Search</button></div>
+        <div id="searchResults" class="result-list"></div>
+        <div class="three-col">
+          <section class="panel"><h3>Friends</h3><div id="friendsList" class="result-list"></div></section>
+          <section class="panel"><h3>Incoming</h3><div id="incomingList" class="result-list"></div></section>
+          <section class="panel"><h3>Sent</h3><div id="outgoingList" class="result-list"></div></section>
+        </div>
+      </section>
+
+      <section id="messagesView" class="view hidden">
+        <div class="page-heading"><div><p class="eyebrow">DIRECT MESSAGES</p><h2>Messages</h2><p>Private conversations are available between friends.</p></div></div>
+        <div class="message-layout">
+          <aside class="panel conversation-list"><h3>Friends</h3><div id="messageFriends"></div></aside>
+          <section class="panel conversation">
+            <div id="conversationHeader" class="conversation-header">Choose a friend</div>
+            <div id="messageList" class="message-list"><p class="empty">Select a friend to open a conversation.</p></div>
+            <form id="messageForm" class="message-compose hidden"><input name="body" maxlength="1000" placeholder="Write a message…" required><button class="primary compact" type="submit">Send</button></form>
+          </section>
+        </div>
+      </section>
+
+      <section id="minisView" class="view hidden">
+        <div class="page-heading"><div><p class="eyebrow">SHORT-FORM VIDEO</p><h2>Mash Minis</h2><p>A retained feature from the original Mash concept.</p></div></div>
+        <div class="panel video-panel">
+          <video id="miniVideo" controls autoplay muted playsinline></video>
+          <div class="video-controls"><button id="prevVideo" class="ghost">Previous</button><span id="videoCounter"></span><button id="nextVideo" class="primary compact">Next</button></div>
+        </div>
+      </section>
+
+      <section id="profileView" class="view hidden">
+        <div class="page-heading"><div><p class="eyebrow">ACCOUNT</p><h2>Profile</h2><p>Update how your account appears across Mash.</p></div></div>
+        <div class="panel profile-card">
+          <img id="profileAvatar" class="profile-avatar" src="/assets/default-avatar.jpg" alt="Profile avatar">
+          <div class="profile-copy"><h3 id="profileUsername"></h3><p id="profileBio"></p><p id="profileJoined" class="muted"></p></div>
+        </div>
+        <form id="profileForm" class="panel stack">
+          <label>Bio<textarea name="bio" maxlength="280" rows="4"></textarea></label>
+          <label>Profile picture <span class="muted">(optional)</span><input name="avatar" type="file" accept="image/*"></label>
+          <button class="primary" type="submit">Save profile</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
